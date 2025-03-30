@@ -1,0 +1,815 @@
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.IgnoreGuiInset = true -- Bỏ phần trống trên cùng
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- Màn hình đen toàn bộ
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.Position = UDim2.new(0, 0, 0, 0)
+background.BackgroundColor3 = Color3.new(0, 0, 0)
+background.Parent = gui
+
+-- Hình ảnh trên chữ Loading
+local image = Instance.new("ImageLabel")
+image.Size = UDim2.new(0, 100, 0, 100) -- Kích thước hình
+image.Position = UDim2.new(0.5, -50, 0.2, 0) -- Canh giữa màn hình
+image.BackgroundTransparency = 1
+image.Image = "rbxassetid://121832166458851"
+image.Parent = background
+
+-- Dòng chữ "Konmeo Hub"
+local hubText = Instance.new("TextLabel")
+hubText.Size = UDim2.new(0, 300, 0, 50)
+hubText.Position = UDim2.new(0.5, -150, 0.35, 0)
+hubText.BackgroundTransparency = 1
+hubText.TextColor3 = Color3.new(1, 1, 1)
+hubText.TextScaled = true
+hubText.Font = Enum.Font.SourceSansBold
+hubText.Text = "Konmeo Hub"
+hubText.Parent = background
+
+-- Dòng chữ "Loading..."
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(0, 300, 0, 100)
+loadingText.Position = UDim2.new(0.5, -150, 0.45, 0)
+loadingText.BackgroundTransparency = 1
+loadingText.TextColor3 = Color3.new(1, 1, 1)
+loadingText.TextScaled = true
+loadingText.Font = Enum.Font.SourceSansBold
+loadingText.Parent = background
+
+-- Thanh nền của loading bar
+local loadingBarBg = Instance.new("Frame")
+loadingBarBg.Size = UDim2.new(0.5, 0, 0, 30) -- Chiều rộng 50% màn hình
+loadingBarBg.Position = UDim2.new(0.25, 0, 0.6, 0)
+loadingBarBg.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+loadingBarBg.Parent = background
+
+-- Thanh chạy loading
+local loadingBar = Instance.new("Frame")
+loadingBar.Size = UDim2.new(0, 0, 1, 0)
+loadingBar.BackgroundColor3 = Color3.new(1, 1, 1)
+loadingBar.Parent = loadingBarBg
+
+-- Hiệu ứng đổi chữ "Loading..."
+local loadingStates = { "Loading...", "Loading..", "Loading.", "Loading..", "Loading..." }
+local index = 1
+
+task.spawn(function()
+    while background.Parent do
+        loadingText.Text = loadingStates[index]
+        index = (index % #loadingStates) + 1
+        task.wait(0.5)
+    end
+end)
+
+-- Thanh loading chạy đúng 7 giây
+for i = 1, 100 do
+    loadingBar.Size = UDim2.new(i / 100, 0, 1, 0)
+    task.wait(7 / 100)
+end
+
+-- Xóa màn hình đen sau 7 giây
+gui:Destroy()
+
+
+
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/daucobonhi/Ui-Redz-V2/refs/heads/main/UiREDzV2.lua")))()
+
+local Window = MakeWindow({
+    Hub = {
+        Title = "DEAD RAILS SCRIPT - KONMEO22132",
+        Animation = "By konmeo22132"
+    },
+    Key = {
+        KeySystem = true,
+        Title = "Key System",
+        Description = "Ngày key hết hạn: 2/4/2025",
+        KeyLink = "https://link-center.net/1239843/key-dead-rails",
+        Keys = {"Konmeo_8jg5a2t"},
+        Notifi = {
+            Notifications = true,
+            CorrectKey = "Valid key - Running the Script...",
+            Incorrectkey = "Invalid key",
+            CopyKeyLink = "Copied to Clipboard"
+        }
+    }
+})
+
+MinimizeButton({
+    Image = "http://www.roblox.com/asset/?id=121832166458851",
+    Size = {60, 60},
+    Color = Color3.fromRGB(10, 10, 10),
+    Corner = true,
+    Stroke = false,
+    StrokeColor = Color3.fromRGB(255, 0, 0)
+})
+
+-- **Tạo Tabs**
+local Tab1o = MakeTab({Name = "Donate"})
+local Tab2o = MakeTab({Name = "Local player"})
+local Tab3o = MakeTab({Name = "Esp"})
+local Tab4o = MakeTab({Name = "Server"})
+
+-- **Thêm tính năng kéo UI**
+local UserInputService = game:GetService("UserInputService")
+
+local function makeDraggable(frame)
+    local dragging, dragStart, startPos
+
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = frame.Position
+        end
+    end)
+
+    frame.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStart
+            frame.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+
+    frame.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+end
+
+-- **Hàm hiển thị bảng Donate**
+local function showDonateGui()
+    local player = game.Players.LocalPlayer
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "DonateGui"
+    gui.Parent = player:WaitForChild("PlayerGui")
+
+    -- **Khung viền trắng có thể kéo**
+    local borderFrame = Instance.new("Frame")
+    borderFrame.Size = UDim2.new(0.3, 0, 0.4, 0)
+    borderFrame.Position = UDim2.new(0.68, 0, 0.12, 0)
+    borderFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    borderFrame.Active = true
+    borderFrame.Parent = gui
+
+    local borderCorner = Instance.new("UICorner")
+    borderCorner.CornerRadius = UDim.new(0.1, 0)
+    borderCorner.Parent = borderFrame
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0.95, 0, 0.95, 0)
+    frame.Position = UDim2.new(0.025, 0, 0.025, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    frame.BackgroundTransparency = 0.1
+    frame.Parent = borderFrame
+
+    local frameCorner = Instance.new("UICorner")
+    frameCorner.CornerRadius = UDim.new(0.1, 0)
+    frameCorner.Parent = frame
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
+    titleLabel.Text = "Thanks for using my script! You can donate me here:"
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.TextScaled = true
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.TextWrapped = true
+    titleLabel.Parent = frame
+
+    local infoLabel = Instance.new("TextLabel")
+    infoLabel.Size = UDim2.new(0.9, 0, 0.5, 0)
+    infoLabel.Position = UDim2.new(0.05, 0, 0.25, 0)
+    infoLabel.Text = "Thesieure: konmeo\nBank: 0334182566 (MB BANK)\nDiscord: konmeo22132\nServer: discord.gg/huneipa"
+    infoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    infoLabel.Font = Enum.Font.SourceSans
+    infoLabel.TextScaled = true
+    infoLabel.TextWrapped = true
+    infoLabel.BackgroundTransparency = 1
+    infoLabel.TextXAlignment = Enum.TextXAlignment.Left
+    infoLabel.Parent = frame
+
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0.35, 0, 0.15, 0)
+    closeButton.Position = UDim2.new(0.325, 0, 0.85, 0)
+    closeButton.Text = "Đóng/Close"
+    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.Font = Enum.Font.SourceSansBold
+    closeButton.TextScaled = true
+    closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    closeButton.Parent = frame
+
+    local closeCorner = Instance.new("UICorner")
+    closeCorner.CornerRadius = UDim.new(0.3, 0)
+    closeCorner.Parent = closeButton
+
+    local donateButton = Instance.new("TextButton")
+    donateButton.Size = UDim2.new(0.12, 0, 0.06, 0)
+    donateButton.Position = UDim2.new(0.86, 0, 0.93, 0)
+    donateButton.Text = "Donate me"
+    donateButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    donateButton.Font = Enum.Font.SourceSansBold
+    donateButton.TextScaled = true
+    donateButton.BackgroundColor3 = Color3.fromRGB(0, 122, 255)
+    donateButton.Visible = false
+    donateButton.Active = true
+    donateButton.Parent = gui
+
+    local donateCorner = Instance.new("UICorner")
+    donateCorner.CornerRadius = UDim.new(0.3, 0)
+    donateCorner.Parent = donateButton
+
+    local canClose = false
+    task.spawn(function()
+        for i = 10, 1, -1 do
+            closeButton.Text = "Đóng/Close (" .. i .. "s)"
+            task.wait(1)
+        end
+        canClose = true
+        closeButton.Text = "Đóng/Close"
+    end)
+
+    closeButton.MouseButton1Click:Connect(function()
+        if canClose then
+            borderFrame.Visible = false
+            donateButton.Visible = true
+        end
+    end)
+
+    donateButton.MouseButton1Click:Connect(function()
+        borderFrame.Visible = true
+        donateButton.Visible = false
+    end)
+
+    -- **Bật tính năng kéo**
+    makeDraggable(borderFrame) 
+    makeDraggable(donateButton) 
+end
+
+-- **Thêm nút Donate vào giao diện**
+AddButton(Tab1o, {
+    Name = "Donate me",
+    Callback = function()
+        showDonateGui()
+    end
+})
+
+AddButton(Tab4o, {
+    Name = "Full bright",
+    Callback = function()
+        local Lighting = game:GetService("Lighting")
+
+-- Thiết lập ánh sáng tối đa
+Lighting.Brightness = 5
+Lighting.ClockTime = 12
+Lighting.FogEnd = 100000
+Lighting.GlobalShadows = false
+
+-- Tự động cập nhật nếu Lighting bị thay đổi
+Lighting.Changed:Connect(function()
+    Lighting.Brightness = 5
+    Lighting.ClockTime = 12
+    Lighting.FogEnd = 100000
+    Lighting.GlobalShadows = false
+end)
+  end
+  })
+
+AddButton(Tab2o, {
+    Name = "Aim bot(lock cam)",
+    Callback = function()
+        local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+player.CameraMode = Enum.CameraMode.Classic
+local runService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+local camera = workspace.CurrentCamera
+
+StarterGui:SetCore("SendNotification", {
+    Title = "SKID by konmeo22132 (100% riel)", 
+    Text = "on Roblox",
+    Duration = 3
+})
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "konmeo22132 - NPC_Lock_GUI"
+screenGui.Parent = game:GetService("CoreGui")
+
+local button = Instance.new("TextButton")
+button.Name = "Konmeo22132's aim status: ON/OFF"
+button.Size = UDim2.new(0, 150, 0, 50)
+button.Position = UDim2.new(0.5, -75, 0.9, -25)
+button.BackgroundColor3 = Color3.new(0, 0, 0)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.Text = "Konmeo22132's aim status:OFF"
+button.Font = Enum.Font.Fantasy
+button.TextScaled = true
+button.TextSize = 20
+button.Parent = screenGui
+
+local uicorner = Instance.new("UICorner")
+uicorner.CornerRadius = UDim.new(0, 12)
+uicorner.Parent = button
+
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    button.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = button.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+button.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        update(input)
+    end
+end)
+
+local npcLock = false
+local lastTarget = nil
+local toggleLoop
+
+local function addPlayerHighlight()
+    if player.Character then
+        local highlight = player.Character:FindFirstChild("PlayerHighlightESP")
+        if not highlight then
+            highlight = Instance.new("Highlight")
+            highlight.Name = "PlayerHighlightESP"
+            highlight.FillColor = Color3.new(1, 1, 1)
+            highlight.OutlineColor = Color3.new(1, 1, 1)
+            highlight.FillTransparency = 0.5
+            highlight.OutlineTransparency = 0
+            highlight.Parent = player.Character
+        end
+    end
+end
+
+local function removePlayerHighlight()
+    if player.Character and player.Character:FindFirstChild("PlayerHighlightESP") then
+        player.Character.PlayerHighlightESP:Destroy()
+    end
+end
+
+local function getClosestNPC()
+    local closestNPC = nil
+    local closestDistance = math.huge
+
+    for _, object in ipairs(workspace:GetDescendants()) do
+        if object:IsA("Model") then
+            local humanoid = object:FindFirstChild("Humanoid") or object:FindFirstChildWhichIsA("Humanoid")
+            local hrp = object:FindFirstChild("HumanoidRootPart") or object.PrimaryPart
+            if humanoid and hrp and humanoid.Health > 0 and object.Name ~= "Horse" then
+                local isPlayer = false
+                for _, pl in ipairs(Players:GetPlayers()) do
+                    if pl.Character == object then
+                        isPlayer = true
+                        break
+                    end
+                end
+                if not isPlayer then
+                    local distance = (hrp.Position - player.Character.HumanoidRootPart.Position).Magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestNPC = object
+                    end
+                end
+            end
+        end
+    end
+
+    return closestNPC
+end
+
+button.MouseButton1Click:Connect(function()
+    npcLock = not npcLock
+    if npcLock then
+        button.Text = "Konmeo22132's aim status:ON"
+        toggleLoop = runService.RenderStepped:Connect(function()
+            local npc = getClosestNPC()
+            if npc and npc:FindFirstChild("Humanoid") then
+                local npcHumanoid = npc:FindFirstChild("Humanoid")
+                if npcHumanoid.Health > 0 then
+                    camera.CameraSubject = npcHumanoid
+                    lastTarget = npc
+                    addPlayerHighlight()
+                else
+                    StarterGui:SetCore("SendNotification", {
+                        Title = "Killed NPC",
+                        Text = npc.Name,
+                        Duration = 0.4
+                    })
+                    lastTarget = nil
+                    removePlayerHighlight()
+                    if player.Character and player.Character:FindFirstChild("Humanoid") then
+                        camera.CameraSubject = player.Character:FindFirstChild("Humanoid")
+                    end
+                end
+            else
+                if player.Character and player.Character:FindFirstChild("Humanoid") then
+                    camera.CameraSubject = player.Character:FindFirstChild("Humanoid")
+                end
+                lastTarget = nil
+                removePlayerHighlight()
+            end
+        end)
+    else
+        button.Text = "Konmeo22132's aim status:OFF"
+        if toggleLoop then
+            toggleLoop:Disconnect()
+            toggleLoop = nil
+        end
+        removePlayerHighlight()
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            camera.CameraSubject = player.Character:FindFirstChild("Humanoid")
+        end
+    end
+end)
+  end
+  })
+
+AddButton(Tab2o, {
+    Name = "Inf jump ( maybe bug, idc) ",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Khi người chơi nhấn phím Space, họ sẽ nhảy liên tục
+local UserInputService = game:GetService("UserInputService")
+UserInputService.JumpRequest:Connect(function()
+    humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+end)
+  end
+  })
+  
+AddButton(Tab4o, {
+    Name = "FPS boost (Some block cant revome texture) ",
+    Callback = function()
+        for _, v in pairs(workspace:GetDescendants()) do
+    if v:IsA("Texture") or v:IsA("Decal") then
+        v:Destroy() -- Xóa tất cả Texture và Decal
+    elseif v:IsA("Part") or v:IsA("MeshPart") then
+        v.Material = Enum.Material.SmoothPlastic -- Đổi về vật liệu đơn giản
+        v.Reflectance = 0
+    end
+end
+
+-- Thông báo hoàn tất
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Texture Removed!",
+    Text = "Tăng FPS thành công!.",
+    Duration = 5
+})
+  end
+  })
+  
+  local noclip = false -- Trạng thái No Clip
+local runService = game:GetService("RunService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Hàm bật/tắt No Clip
+local function toggleNoClip()
+    noclip = not noclip -- Đảo trạng thái bật/tắt
+
+    if noclip then
+        print("No Clip Enabled!") -- Thông báo bật
+    else
+        print("No Clip Disabled!") -- Thông báo tắt
+    end
+
+    -- Bật/Tắt CanCollide ngay lập tức
+    for _, v in pairs(character:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.CanCollide = not noclip
+        end
+    end
+end
+
+-- Vòng lặp cập nhật No Clip (chỉ chạy khi bật)
+runService.Stepped:Connect(function()
+    if noclip then
+        for _, v in pairs(character:GetChildren()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
+    end
+end)
+
+-- Nút bật/tắt No Clip
+AddButton(Tab2o, {
+    Name = " No Clip",
+    Callback = toggleNoClip
+})
+
+AddButton(Tab3o, {
+    Name = "ESP player",
+    Callback = function()
+        local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local localPlayer = Players.LocalPlayer
+
+-- Hàm tạo ESP cho người chơi
+local function createESP(player)
+    if player == localPlayer then return end -- Không hiển thị bản thân
+
+    player.CharacterAdded:Connect(function(character)
+        task.wait(1) -- Chờ nhân vật load tránh lỗi
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        local head = character:FindFirstChild("Head")
+
+        if humanoid and head then
+            -- Tạo Highlight (Viền trắng)
+            local highlight = Instance.new("Highlight")
+            highlight.Adornee = character
+            highlight.FillTransparency = 1 -- Chỉ hiển thị viền
+            highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- Màu viền trắng
+            highlight.Parent = character
+
+            -- Tạo BillboardGui hiển thị HP
+            local billboard = Instance.new("BillboardGui")
+            billboard.Adornee = head
+            billboard.Size = UDim2.new(5, 0, 1, 0)
+            billboard.StudsOffset = Vector3.new(0, 2, 0) -- Hiển thị trên đầu
+            billboard.AlwaysOnTop = true
+            billboard.LightInfluence = 0 -- Giúp hiển thị xuyên tường
+            billboard.MaxDistance = math.huge -- Không giới hạn khoảng cách nhìn thấy
+            billboard.Parent = head
+
+            local hpLabel = Instance.new("TextLabel")
+            hpLabel.Size = UDim2.new(1, 0, 1, 0)
+            hpLabel.BackgroundTransparency = 1
+            hpLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Màu trắng
+            hpLabel.Font = Enum.Font.SourceSansBold
+            hpLabel.TextScaled = true
+            hpLabel.TextStrokeTransparency = 0.5 -- Viền chữ
+            hpLabel.Parent = billboard
+
+            -- Cập nhật HP theo thời gian thực
+            local updateConnection
+            updateConnection = RunService.RenderStepped:Connect(function()
+                if character and humanoid and humanoid.Health > 0 then
+                    hpLabel.Text = string.format("%d/%d HP", math.floor(humanoid.Health), humanoid.MaxHealth)
+                else
+                    highlight:Destroy()
+                    billboard:Destroy()
+                    updateConnection:Disconnect()
+                end
+            end)
+        end
+    end)
+
+    -- Nếu nhân vật đã tồn tại, tạo ESP ngay lập tức
+    if player.Character then
+        task.spawn(function()
+            createESP(player)
+        end)
+    end
+end
+
+-- Áp dụng ESP cho tất cả người chơi
+for _, player in pairs(Players:GetPlayers()) do
+    createESP(player)
+end
+
+-- Áp dụng ESP cho người chơi mới vào
+Players.PlayerAdded:Connect(createESP)
+  end
+  })
+  
+  AddButton(Tab3o, {
+    Name = "ESP enemies",
+    Callback = function()
+        local RunService = game:GetService("RunService")
+local EnemiesFolder = workspace:FindFirstChild("Enemies")
+
+if not EnemiesFolder then
+    warn("Không tìm thấy folder 'Enemies' trong workspace!")
+    return
+end
+
+-- Hàm tạo ESP cho từng NPC
+local function createESP(npc)
+    if not npc:FindFirstChild("Humanoid") or not npc:FindFirstChild("HumanoidRootPart") then
+        return
+    end
+
+    -- **Viền đỏ quanh cơ thể**
+    for _, part in ipairs(npc:GetChildren()) do
+        if part:IsA("BasePart") then
+            local highlight = Instance.new("Highlight")
+            highlight.Parent = part
+            highlight.Adornee = part
+            highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Màu đỏ nhạt
+            highlight.FillTransparency = 0.7 
+            highlight.OutlineColor = Color3.fromRGB(255, 0, 0) -- Viền đỏ
+            highlight.OutlineTransparency = 0
+        end
+    end
+
+    -- **Dòng chữ HP màu đỏ xuyên tường**
+    local billboard = Instance.new("BillboardGui")
+    billboard.Parent = npc:FindFirstChild("HumanoidRootPart")
+    billboard.Size = UDim2.new(5, 0, 1, 0)
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
+    billboard.AlwaysOnTop = true
+
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Parent = billboard
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Màu đỏ
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextScaled = true
+
+    -- **Cập nhật máu liên tục**
+    local humanoid = npc:FindFirstChild("Humanoid")
+    RunService.RenderStepped:Connect(function()
+        if humanoid and humanoid.Parent then
+            textLabel.Text = humanoid.Health .. " / " .. humanoid.MaxHealth .. " HP"
+        end
+    end)
+end
+
+-- **Thêm ESP cho tất cả kẻ địch có sẵn**
+for _, npc in ipairs(EnemiesFolder:GetChildren()) do
+    if npc:IsA("Model") then
+        createESP(npc)
+    end
+end
+
+-- **Tự động ESP kẻ địch mới spawn**
+EnemiesFolder.ChildAdded:Connect(function(npc)
+    if npc:IsA("Model") then
+        wait(1) -- Chờ model load đầy đủ
+        createESP(npc)
+    end
+end)
+  end
+  })
+  
+AddButton(Tab4o, {
+    Name = "Revome fog",
+    Callback = function()
+        -- Lấy Lighting
+local lighting = game:GetService("Lighting")
+
+-- Xoá tất cả các hiệu ứng sương mù
+lighting.FogEnd = 1000000  -- Đẩy xa sương mù để không thấy
+lighting.FogStart = 1000000
+lighting.Atmosphere = nil  -- Xoá hiệu ứng Atmosphere nếu có
+lighting.Bloom = nil  -- Xoá hiệu ứng Bloom làm mờ
+lighting.ColorCorrection = nil  -- Xoá hiệu ứng chỉnh màu
+
+-- In thông báo
+print("Fog has been removed!")
+  end
+  }
+  
+AddButton(Tab2o, {
+    Name = "Anti Afk",
+    Callback = function()
+        local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+    task.wait(1)
+    vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+end)
+
+AddButton(Tab3o, {
+    Name = "Esp item",
+    Callback = function()
+        local espOutlineColor = Color3.fromRGB(255, 255, 255) -- Viền trắng
+local espFillColor = Color3.fromRGB(0, 0, 255) -- Nền xanh dương
+local espTransparency = 0.5 -- Độ trong suốt
+
+local function createESP(model)
+    if model:IsA("Model") and not model:FindFirstChild("ESPTag") then
+        -- Đánh dấu object đã có ESP để tránh trùng lặp
+        local tag = Instance.new("BoolValue")
+        tag.Name = "ESPTag"
+        tag.Parent = model
+
+        -- Tìm PrimaryPart của Model (nếu chưa có thì đặt Part đầu tiên làm PrimaryPart)
+        if not model.PrimaryPart then
+            local firstPart = model:FindFirstChildWhichIsA("BasePart")
+            if firstPart then
+                model.PrimaryPart = firstPart
+            else
+                return -- Không có Part thì bỏ qua
+            end
+        end
+
+        local primaryPart = model.PrimaryPart
+
+        -- Viền trắng sát object
+        local outline = Instance.new("SelectionBox")
+        outline.Adornee = primaryPart
+        outline.LineThickness = 0.03
+        outline.Color3 = espOutlineColor
+        outline.Parent = primaryPart
+
+        -- Nền xanh dương mờ
+        local highlight = Instance.new("BoxHandleAdornment")
+        highlight.Adornee = primaryPart
+        highlight.Size = model:GetExtentsSize()
+        highlight.Color3 = espFillColor
+        highlight.Transparency = espTransparency
+        highlight.AlwaysOnTop = true
+        highlight.ZIndex = 5
+        highlight.Parent = primaryPart
+
+        -- Hiển thị tên Model
+        local billboard = Instance.new("BillboardGui")
+        billboard.Adornee = primaryPart
+        billboard.Size = UDim2.new(4, 0, 1, 0)
+        billboard.StudsOffset = Vector3.new(0, model:GetExtentsSize().Y / 2 + 1, 0)
+        billboard.AlwaysOnTop = true
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.new(1, 1, 1) -- Màu trắng
+        textLabel.TextScaled = true
+        textLabel.Font = Enum.Font.SourceSansBold
+        textLabel.Text = model.Name
+        textLabel.Parent = billboard
+
+        billboard.Parent = primaryPart
+    end
+end
+
+local function applyESPToAll()
+    local runtimeItems = workspace:FindFirstChild("RuntimeItems")
+    if runtimeItems then
+        for _, object in pairs(runtimeItems:GetChildren()) do
+            if object:IsA("Model") then
+                createESP(object)
+            end
+        end
+    end
+end
+
+local function watchForNewItems()
+    local runtimeItems = workspace:FindFirstChild("RuntimeItems")
+    if runtimeItems then
+        runtimeItems.ChildAdded:Connect(function(child)
+            task.wait(1) -- Đợi object load hoàn toàn
+            if child:IsA("Model") then
+                createESP(child)
+            end
+        end)
+    end
+end
+
+applyESPToAll()
+watchForNewItems()
+
+AddButton(Tab2o, {
+    Name = "Speed boost (x1.2)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local humanoid = char:FindFirstChildOfClass("Humanoid")
+
+if humanoid then
+    humanoid.WalkSpeed = humanoid.WalkSpeed * 1.15
+end
+
+AddButton(Tab2o, {
+    Name = "Jump boost (x1.4)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local humanoid = char:FindFirstChildOfClass("Humanoid")
+
+if humanoid then
+    humanoid.JumpPower = humanoid.JumpPower * 1.4
+end
