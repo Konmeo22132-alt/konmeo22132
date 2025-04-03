@@ -1,0 +1,48 @@
+  local adminId = 4882845089 -- ID của admin có quyền kick
+local players = game:GetService("Players")
+
+-- Hàm kiểm tra và xử lý lệnh
+local function onChatted(player, message)
+    if player.UserId == adminId then
+        local args = string.split(message, " ")
+        if args[1] == "!kick" and args[2] then
+            local targetInput = args[2] -- Có thể là tên hoặc UserID
+            local reason = table.concat(args, " ", 3) -- Lý do kick (từ từ khóa thứ 3 trở đi)
+            if reason == "" then
+                reason = "No reason given" -- Nếu không có lý do, đặt mặc định
+            end
+
+            local targetPlayer = nil
+            
+            -- Tìm người chơi theo Username hoặc UserID
+            for _, p in pairs(players:GetPlayers()) do
+                if p.Name:lower() == targetInput:lower() or tostring(p.UserId) == targetInput then
+                    targetPlayer = p
+                    break
+                end
+            end
+
+            -- Nếu tìm thấy người chơi, kick họ với lý do
+            if targetPlayer then
+                targetPlayer:Kick("You have been kicked by an admin.\nReason: " .. reason)
+                print(targetPlayer.Name .. " (UserID: " .. targetPlayer.UserId .. ") has been kicked by " .. player.Name .. " | Reason: " .. reason)
+            else
+                print("Player not found: " .. targetInput)
+            end
+        end
+    end
+end
+
+-- Gắn sự kiện khi ai đó nhập lệnh
+players.PlayerAdded:Connect(function(player)
+    player.Chatted:Connect(function(message)
+        onChatted(player, message)
+    end)
+end)
+
+-- Kiểm tra với người chơi đang có trong server
+for _, player in pairs(players:GetPlayers()) do
+    player.Chatted:Connect(function(message)
+        onChatted(player, message)
+    end)
+end
