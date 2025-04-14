@@ -1,0 +1,12 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local camera = workspace.CurrentCamera
+
+player.CameraMode = Enum.CameraMode.Classic
+player.CameraMinZoomDistance = 0.5
+player.CameraMaxZoomDistance = 25
+
+player.CameraMinZoomDistance = 10
+
+wait(1)
+player.CameraMinZoomDistance = 0.5
