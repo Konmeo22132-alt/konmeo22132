@@ -1,0 +1,34 @@
+-- Script này nên đặt trong StarterPlayer > StarterCharacterScripts
+-- hoặc StarterPlayer > StarterPlayerScripts nếu muốn áp dụng liên tục
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+
+local function applyJumpBoost(character)
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if humanoid then
+		local defaultJumpPower = humanoid.JumpPower
+		local boostedPower = defaultJumpPower * 1.2
+
+		humanoid.JumpPower = boostedPower
+
+		-- Theo dõi liên tục nếu bị reset
+		RunService.Heartbeat:Connect(function()
+			if humanoid.JumpPower < boostedPower then
+				humanoid.JumpPower = boostedPower
+			end
+		end)
+	end
+end
+
+-- Kích hoạt khi nhân vật xuất hiện lần đầu hoặc respawn
+player.CharacterAdded:Connect(function(char)
+	char:WaitForChild("Humanoid")
+	applyJumpBoost(char)
+end)
+
+-- Nếu nhân vật đã tồn tại
+if player.Character then
+	applyJumpBoost(player.Character)
+end
