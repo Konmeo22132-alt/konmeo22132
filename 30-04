@@ -1,0 +1,62 @@
+--// Script Roblox - Hiển thị thông điệp 30/4 phong cách cờ giải phóng
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Tạo ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "VictoryMessageGui"
+screenGui.Parent = playerGui
+
+-- Tạo nền đen full màn hình (bao phủ toàn bộ màn hình thiết bị)
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)  -- Nền phủ toàn bộ màn hình
+background.Position = UDim2.new(0, 0, 0, 0)
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+background.BackgroundTransparency = 0.1  -- Mờ nhẹ nền
+background.BorderSizePixel = 0
+background.Parent = screenGui
+
+-- Frame chứa dòng chữ
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.8, 0, 0.3, 0)  -- Dòng chữ chiếm 80% chiều rộng màn hình và 30% chiều cao
+frame.Position = UDim2.new(0.1, 0, 0.35, 0)
+frame.BackgroundTransparency = 1
+frame.BorderSizePixel = 0
+frame.Parent = background
+
+-- Tạo TextLabel cho dòng 1 (Màu đỏ)
+local text1 = Instance.new("TextLabel")
+text1.Size = UDim2.new(1, 0, 0.5, 0)
+text1.Position = UDim2.new(0, 0, 0, 0)
+text1.BackgroundTransparency = 1
+text1.TextScaled = true
+text1.Font = Enum.Font.GothamBold
+text1.Text = "CHÀO MỪNG NGÀY 30/4 - GIẢI PHÓNG MIỀN NAM, THỐNG NHẤT ĐẤT NƯỚC."
+text1.TextColor3 = Color3.fromRGB(255, 0, 0) -- Màu đỏ
+text1.TextTransparency = 0.1  -- Mờ nhẹ chữ
+text1.Parent = frame
+
+-- Tạo TextLabel cho dòng 2 (Màu xanh dương)
+local text2 = Instance.new("TextLabel")
+text2.Size = UDim2.new(1, 0, 0.5, 0)
+text2.Position = UDim2.new(0, 0, 0.5, 0)
+text2.BackgroundTransparency = 1
+text2.TextScaled = true
+text2.Font = Enum.Font.Gotham
+text2.Text = "ĐỜI ĐỜI NHỚ ƠN BÁC HỒ VĨ ĐẠI!"
+text2.TextColor3 = Color3.fromRGB(0, 191, 255) -- Màu xanh dương
+text2.TextTransparency = 0.1  -- Mờ nhẹ chữ
+text2.Parent = frame
+
+-- Hiệu ứng Fade Out sau 5 giây
+task.delay(5, function()
+    for i = 0, 1, 0.02 do
+        background.BackgroundTransparency = 0.1 + i * 0.9 -- Mờ nền dần
+        text1.TextTransparency = 0.1 + i * 0.9  -- Mờ chữ dòng 1 dần
+        text2.TextTransparency = 0.1 + i * 0.9  -- Mờ chữ dòng 2 dần
+        task.wait(0.05)
+    end
+    screenGui:Destroy()
+end)
